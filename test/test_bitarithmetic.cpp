@@ -11,10 +11,13 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/bitarithmetic.hpp>
-
 #include "catch2.hpp"
 
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/bitarithmetic.hpp>
+#endif
 
 TEST_CASE("bitarithmetic types can be bitanded")
 {

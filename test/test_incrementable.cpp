@@ -11,9 +11,13 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/incrementable.hpp>
-
 #include "catch2.hpp"
+
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/incrementable.hpp>
+#endif
 
 TEST_CASE("an incrementable can be incremented")
 {

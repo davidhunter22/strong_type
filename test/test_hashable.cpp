@@ -11,12 +11,18 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/hashable.hpp>
-#include <strong_type/regular.hpp>
-
 #include "catch2.hpp"
 
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/hashable.hpp>
+#include <strong_type/regular.hpp>
+#endif
+
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <unordered_set>
+#endif
 
 TEST_CASE("strong::hashable can be used in unordered_set")
 {

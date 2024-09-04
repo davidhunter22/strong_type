@@ -11,11 +11,17 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/ordered.hpp>
-
 #include "catch2.hpp"
 
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/ordered.hpp>
+#endif
+
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <cmath>
+#endif
 
 TEST_CASE("ordered type can be compared for ordering")
 {

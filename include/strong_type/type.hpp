@@ -14,10 +14,12 @@
 #ifndef ROLLBEAR_STRONG_TYPE_TYPE_HPP_INCLUDED
 #define ROLLBEAR_STRONG_TYPE_TYPE_HPP_INCLUDED
 
-
-//#include <type_traits>
-//#include <initializer_list>
-//#include <utility>
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
+    #include <type_traits>
+    #include <initializer_list>
+    #include <utility>
+    #define STRONG_TYPE_MODULE_EXPORT
+#endif
 
 #if defined(_MSC_VER) && !defined(__clang__) && _MSC_VER < 1922
 #define STRONG_CONSTEXPR
@@ -32,15 +34,15 @@
 #endif
 
 namespace strong {
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT struct uninitialized_t {
+STRONG_TYPE_MODULE_EXPORT struct uninitialized_t {
 };
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT constexpr uninitialized_t uninitialized{};
+STRONG_TYPE_MODULE_EXPORT constexpr uninitialized_t uninitialized{};
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename M, typename T>
+STRONG_TYPE_MODULE_EXPORT template<typename M, typename T>
 using modifier = typename M::template modifier<T>;
 
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT struct default_constructible {
+STRONG_TYPE_MODULE_EXPORT struct default_constructible {
     template<typename T>
     class modifier {
     };
@@ -54,12 +56,12 @@ constexpr bool supports_default_construction(
     return true;
 }
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename T, typename ... V>
+template<typename T, typename ... V>
 using WhenConstructible = std::enable_if_t<std::is_constructible<T, V...>::value>;
 }
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename T, typename Tag, typename ... M>
- class type : public modifier<M, type<T, Tag, M...>> ... {
+STRONG_TYPE_MODULE_EXPORT template<typename T, typename Tag, typename ... M>
+class type : public modifier<M, type<T, Tag, M...>> ... {
 public:
     template<typename TT = T, typename = std::enable_if_t<std::is_trivially_constructible<TT>{}>>
     explicit type(uninitialized_t)
@@ -157,23 +159,23 @@ constexpr T underlying_type(strong::type<T, Tag, Ms...> *);
 
 }
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename T>
+STRONG_TYPE_MODULE_EXPORT template<typename T>
 struct is_strong_type : std::integral_constant<bool, impl::is_strong_type_func(
     static_cast<T *>(nullptr))> {
 };
 
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename T, bool = is_strong_type<T>::value>
+STRONG_TYPE_MODULE_EXPORT template<typename T, bool = is_strong_type<T>::value>
 struct underlying_type {
     using type = decltype(impl::underlying_type(static_cast<T *>(nullptr)));
 };
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename T>
+STRONG_TYPE_MODULE_EXPORT template<typename T>
 struct underlying_type<T, false> {
     using type = T;
 };
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template<typename T>
+STRONG_TYPE_MODULE_EXPORT template<typename T>
 using underlying_type_t = typename underlying_type<T>::type;
 
 namespace impl {
@@ -182,7 +184,8 @@ using WhenStrongType = std::enable_if_t<is_strong_type<std::decay_t<T>>::value>;
 template<typename T>
 using WhenNotStrongType = std::enable_if_t<!is_strong_type<std::decay_t<T>>::value>;
 
-template<
+// This is used in the implementation of public functions so must be exported
+STRONG_TYPE_MODULE_EXPORT template<
     typename T,
     typename = impl::WhenNotStrongType<T>>
 constexpr
@@ -193,7 +196,8 @@ noexcept
     return std::forward<T>(t);
 }
 
-template<
+// This is used in the implementation of public functions so must be exported
+STRONG_TYPE_MODULE_EXPORT template<
     typename T,
     typename = impl::WhenStrongType<T>>
 STRONG_NODISCARD
@@ -354,10 +358,10 @@ template <typename T>
 using get_strong = decltype(get_strong_(static_cast<T*>(nullptr)));
 }
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template <typename T, typename M>
+STRONG_TYPE_MODULE_EXPORT template <typename T, typename M>
 constexpr bool type_is_v = impl::type_is<impl::get_strong<T>, M>;
 
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT template <typename T, typename M>
+STRONG_TYPE_MODULE_EXPORT template <typename T, typename M>
 using type_is = std::integral_constant<bool, type_is_v<T,M>>;
 
 }

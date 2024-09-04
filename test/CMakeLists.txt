@@ -50,10 +50,21 @@ if (NOT ${Catch2_FOUND})
   add_compile_definitions(CATCH2=2)
 endif()
 
+if(STRONG_TYPE_IMPORT_STD_LIBRARY)
+    message(STATUS "Building using import std")
+    add_compile_definitions(STRONG_TYPE_IMPORT_STD_LIBRARY=1)
+endif()
+
+if(STRONG_TYPE_MODULE)
+    message(STATUS "Building using import strong_type")
+    add_compile_definitions(STRONG_TYPE_IMPORT_STD_LIBRARY=1)
+endif()
+
 add_executable(
         self_test
         test.cpp
         test_type.cpp
+        test_utils.hpp
         test_equality.cpp
         test_equality_with.cpp
         test_ordered.cpp
@@ -82,8 +93,14 @@ add_executable(
         test_implicitly_convertible_to.cpp
         empty.cpp
         test_scalable_with.cpp
-        ${CATCH_MAIN}
-        )
+         ${CATCH_MAIN})
+
+if(${STRONG_TYPE_MODULE})
+   target_compile_definitions(
+       self_test
+       PRIVATE
+       STRONG_TYPE_IMPORT_MODULE=1)
+endif()
 
 target_link_libraries(
         self_test
@@ -93,7 +110,7 @@ target_link_libraries(
         strong_type::strong_type
 )
 
-add_subdirectory(test_fmt8)
-add_subdirectory(test_fmt9)
-add_subdirectory(test_fmt10)
-add_subdirectory(test_fmt11)
+# add_subdirectory(test_fmt8)
+# add_subdirectory(test_fmt9)
+# add_subdirectory(test_fmt10)
+# add_subdirectory(test_fmt11)

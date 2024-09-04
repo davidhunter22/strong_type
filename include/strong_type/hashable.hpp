@@ -16,11 +16,13 @@
 
 #include "type.hpp"
 
+#if !defined(STRONG_TYPE_MODULE)
 #include <functional>
+#endif
 
 namespace strong
 {
-struct hashable
+STRONG_TYPE_MODULE_EXPORT struct hashable
 {
     template <typename T>
     class modifier{};
@@ -29,7 +31,7 @@ struct hashable
 }
 
 namespace std {
-template<typename T, typename Tag, typename ... M>
+STRONG_TYPE_MODULE_EXPORT template<typename T, typename Tag, typename ... M>
 struct hash<::strong::type<T, Tag, M...>>
     : std::conditional_t<
         std::is_base_of<

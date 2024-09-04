@@ -1,19 +1,21 @@
 #ifndef STRONG_TYPE_STRONG_ORDERING_HPP
 #define STRONG_TYPE_STRONG_ORDERING_HPP
 
-#include <compare>
-
 #include "type.hpp"
+
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
+#include <compare>
+#endif
 
 namespace strong
 {
-struct strong_ordering
+STRONG_TYPE_MODULE_EXPORT struct strong_ordering
 {
     template <typename T>
     class modifier;
 };
 
-template <typename T, typename Tag, typename ... M>
+STRONG_TYPE_MODULE_EXPORT template <typename T, typename Tag, typename ... M>
 class strong_ordering::modifier<::strong::type<T, Tag, M...>>
 {
     using type = ::strong::type<T, Tag, M...>;

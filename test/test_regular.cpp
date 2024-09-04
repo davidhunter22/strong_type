@@ -11,11 +11,17 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/regular.hpp>
-
 #include "catch2.hpp"
 
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/regular.hpp>
+#endif
+
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <memory>
+#endif
 
 namespace {
 using type = strong::type<int, struct type_, strong::regular>;

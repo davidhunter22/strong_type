@@ -18,7 +18,9 @@
 
 #ifndef STRONG_HAS_STD_FORMAT
 #if __has_include(<version>)
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <version>
+#endif
 #if defined(__cpp_lib_format) && __cpp_lib_format >= 201907
 #define STRONG_HAS_STD_FORMAT 1
 #endif
@@ -38,7 +40,9 @@
 #endif
 
 #if STRONG_HAS_STD_FORMAT
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <format>
+#endif
 #endif
 
 #if STRONG_HAS_FMT_FORMAT
@@ -51,7 +55,7 @@
 namespace strong
 {
 
-struct formattable
+STRONG_TYPE_MODULE_EXPORT struct formattable
 {
     template <typename T>
     class modifier{};

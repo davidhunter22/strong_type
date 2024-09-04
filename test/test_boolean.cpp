@@ -11,9 +11,13 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/boolean.hpp>
-
 #include "catch2.hpp"
+
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/boolean.hpp>
+#endif
 
 TEST_CASE("a boolean value can be tested for truth")
 {

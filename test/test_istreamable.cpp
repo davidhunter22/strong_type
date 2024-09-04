@@ -11,11 +11,17 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/istreamable.hpp>
-
 #include "catch2.hpp"
 
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/istreamable.hpp>
+#endif
+
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <sstream>
+#endif
 
 TEST_CASE("an istreamable type can be read from a istream")
 {

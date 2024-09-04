@@ -18,7 +18,7 @@
 
 namespace strong
 {
-STRONG_TYPE_BUILD_STD_MODULE_EXPORT struct boolean
+STRONG_TYPE_MODULE_EXPORT struct boolean
 {
     template <typename T, typename = void>
     class modifier

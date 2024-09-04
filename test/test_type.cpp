@@ -11,14 +11,19 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
-#include <strong_type/type.hpp>
-
 #include "catch2.hpp"
+
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/type.hpp>
+#endif
 
 #include "test_utils.hpp"
 
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <memory>
-
+#endif
 
 TEST_CASE("default_constructible initializes with underlying default constructor")
 {

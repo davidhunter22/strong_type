@@ -16,11 +16,13 @@
 
 #include "type.hpp"
 
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <istream>
+#endif
 
 namespace strong
 {
-struct istreamable
+STRONG_TYPE_MODULE_EXPORT struct istreamable
 {
     template <typename T, typename = void>
     class  modifier

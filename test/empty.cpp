@@ -12,5 +12,8 @@
  */
 
 
-
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
 #include <strong_type/strong_type.hpp>
+#endif

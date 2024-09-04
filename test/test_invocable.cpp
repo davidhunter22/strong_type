@@ -1,6 +1,23 @@
-#include <strong_type/invocable.hpp>
+/*
+ * strong_type C++14/17/20 strong typedef library
+ *
+ * Copyright (C) Björn Fahller
+ *
+ *  Use, modification and distribution is subject to the
+ *  Boost Software License, Version 1.0. (See accompanying
+ *  file LICENSE_1_0.txt or copy at
+ *  http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * Project home: https://github.com/rollbear/strong_type
+ */
 
 #include "catch2.hpp"
+
+#if defined(STRONG_TYPE_IMPORT_MODULE)
+import strong_type;
+#else
+#include <strong_type/invocable.hpp>
+#endif
 
 namespace {
 using type = strong::type<int (*)(int), struct type_, strong::invocable>;
