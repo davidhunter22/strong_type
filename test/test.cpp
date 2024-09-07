@@ -11,6 +11,7 @@
  * Project home: https://github.com/rollbear/strong_type
  */
 
+
  #include "catch2.hpp"
 
 // include first to ensure there aren't any unmet header dependencies
@@ -248,11 +249,9 @@ static_assert(!is_divisible<dchandle>{}, "");
 
 using ahandle = strong::type<int, struct ahandle_tag, strong::arithmetic>;
 
-#if !defined(STRONG_TYPE_IMPORT_MODULE)
 static_assert(std::numeric_limits<ahandle>::is_specialized, "");
 static_assert(value_of(std::numeric_limits<ahandle>::min()) == std::numeric_limits<int>::min(),"");
 static_assert(value_of(std::numeric_limits<ahandle>::max()) == std::numeric_limits<int>::max(),"");
-#endif
 static_assert(strong::type_is_v<ahandle, strong::arithmetic>, "");
 static_assert(!std::is_default_constructible<ahandle>{},"");
 static_assert(std::is_nothrow_constructible<ahandle, int&&>{},"");
@@ -281,14 +280,12 @@ using ahandle2 = strong::type<int, struct ahandle2_tag, strong::arithmetic>;
 static_assert(!is_subtractable<ahandle, ahandle2>{},"");
 
 using afhandle = strong::type<float, struct afloat_tag, strong::arithmetic>;
-#if !defined(STRONG_TYPE_IMPORT_MODULE)
 static_assert(std::numeric_limits<afhandle>::is_specialized, "");
 static_assert(value_of(std::numeric_limits<afhandle>::min()) == std::numeric_limits<float>::min(), "");
 static_assert(value_of(std::numeric_limits<afhandle>::max()) == std::numeric_limits<float>::max(), "");
 static_assert(value_of(std::numeric_limits<afhandle>::lowest()) == std::numeric_limits<float>::lowest(), "");
 static_assert(value_of(std::numeric_limits<afhandle>::denorm_min()) == std::numeric_limits<float>::denorm_min(), "");
 static_assert(std::numeric_limits<afhandle>::min_exponent10 == std::numeric_limits<float>::min_exponent10, "");
-#endif
 static_assert(!is_modulo_able<afhandle>{},"");
 
 

@@ -15,7 +15,7 @@
 #define STRONG_TYPE_RANGE_HPP
 
 #if __has_include(<ranges>)
-#if !defined(STRONG_TYPE_MODULE)
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #    include <ranges>
 #endif
 #endif

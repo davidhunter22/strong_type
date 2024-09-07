@@ -16,7 +16,7 @@
 
 #include "type.hpp"
 
-#if !defined(STRONG_TYPE_MODULE)
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
     #include <limits>
 #endif
 
@@ -172,17 +172,19 @@ public:
 
 }
 
+namespace std
+{
 STRONG_TYPE_MODULE_EXPORT template <typename T, typename Tag, typename ... Ms>
 #if defined(__cpp_concepts)
 requires strong::type_is_v<strong::type<T, Tag, Ms...>, strong::arithmetic>
-class std::numeric_limits<strong::type<T, Tag, Ms...>>
-    : public std::numeric_limits<T>
+class numeric_limits<strong::type<T, Tag, Ms...>>
+    : public numeric_limits<T>
 #else
-class std::numeric_limits<strong::type<T, Tag, Ms...>>
+class numeric_limits<strong::type<T, Tag, Ms...>>
     : public std::conditional<
         strong::type_is_v<strong::type<T, Tag, Ms...>, strong::arithmetic>,
-        std::numeric_limits<T>,
-        std::numeric_limits<void>
+        numeric_limits<T>,
+        numeric_limits<void>
     >::type
 #endif
 {
@@ -198,4 +200,5 @@ public:
     STRONG_NODISCARD static constexpr type signaling_NaN() noexcept { return type{std::numeric_limits<T>::signaling_NaN()};}
     STRONG_NODISCARD static constexpr type denorm_min() noexcept { return type{std::numeric_limits<T>::denorm_min()};}
 };
+}
 #endif //STRONG_TYPE_ARITHMETIC_HPP

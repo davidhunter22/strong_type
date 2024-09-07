@@ -19,7 +19,7 @@
 #include "affine_point.hpp"
 #include "indexed.hpp"
 
-#if !defined(STRONG_TYPE_MODULE)
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <iterator>
 #endif
 

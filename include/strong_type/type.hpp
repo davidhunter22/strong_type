@@ -18,7 +18,6 @@
     #include <type_traits>
     #include <initializer_list>
     #include <utility>
-    #define STRONG_TYPE_MODULE_EXPORT
 #endif
 
 #if defined(_MSC_VER) && !defined(__clang__) && _MSC_VER < 1922
@@ -31,6 +30,11 @@
 #define STRONG_NODISCARD [[nodiscard]]
 #else
 #define STRONG_NODISCARD
+#endif
+
+// For users including rather than importing the library we don't want to force them to define STRONG_TYPE_MODULE_EXPORT so if not defined  define it to be empty
+#if !defined(STRONG_TYPE_MODULE_EXPORT)
+#define STRONG_TYPE_MODULE_EXPORT
 #endif
 
 namespace strong {

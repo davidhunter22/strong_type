@@ -50,15 +50,7 @@ if (NOT ${Catch2_FOUND})
   add_compile_definitions(CATCH2=2)
 endif()
 
-if(STRONG_TYPE_IMPORT_STD_LIBRARY)
-    message(STATUS "Building using import std")
-    add_compile_definitions(STRONG_TYPE_IMPORT_STD_LIBRARY=1)
-endif()
-
-if(STRONG_TYPE_MODULE)
-    message(STATUS "Building using import strong_type")
-    add_compile_definitions(STRONG_TYPE_IMPORT_STD_LIBRARY=1)
-endif()
+source_group( " "  REGULAR_EXPRESSION .*)
 
 add_executable(
         self_test
@@ -95,11 +87,20 @@ add_executable(
         test_scalable_with.cpp
          ${CATCH_MAIN})
 
+if(${STRONG_TYPE_IMPORT_STD_LIBRARY})
+    message(STATUS "Building tests using std library module")
+    target_compile_definitions(
+        self_test
+        PUBLIC
+        STRONG_TYPE_IMPORT_STD_LIBRARY)
+endif()
+
 if(${STRONG_TYPE_MODULE})
+   message(STATUS "Building tests using strong_type module")
    target_compile_definitions(
        self_test
        PRIVATE
-       STRONG_TYPE_IMPORT_MODULE=1)
+       STRONG_TYPE_IMPORT_MODULE)
 endif()
 
 target_link_libraries(

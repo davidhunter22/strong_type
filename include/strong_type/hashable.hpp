@@ -16,7 +16,7 @@
 
 #include "type.hpp"
 
-#if !defined(STRONG_TYPE_MODULE)
+#if !defined(STRONG_TYPE_IMPORT_STD_LIBRARY)
 #include <functional>
 #endif
 

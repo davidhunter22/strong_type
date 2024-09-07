@@ -17,8 +17,9 @@ project(strong_type)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-option(STRONG_TYPE_MODULE     "Build into a module" ON)
-option(STRONG_TYPE_UNIT_TEST  "Decide whether to build unit tests or not" ON)
+option(STRONG_TYPE_IMPORT_STD_LIBRARY "Build using import std rather this #include <meow>" OFF)
+option(STRONG_TYPE_MODULE             "Build into a module" ON)
+option(STRONG_TYPE_UNIT_TEST          "Decide whether to build unit tests or not" ON)
 
 set(STRONG_TYPE_VERSION 15)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -30,6 +31,8 @@ endif()
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS "On")
+
 # By default we don't want the Visual Studio default "sources" and "headers" folders, the following put's everything directly in the project
 if (MSVC)
     source_group( " "  REGULAR_EXPRESSION .*)
@@ -39,17 +42,17 @@ if (${STRONG_TYPE_UNIT_TEST})
   add_subdirectory(test)
 endif()
 
+add_subdirectory(example)
+
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/strong_type/strong_type-config-version.cmake"
   VERSION ${STRONG_TYPE_VERSION}
   COMPATIBILITY AnyNewerVersion
   ARCH_INDEPENDENT)
 
+# This could be globbed, it's debatable if this is better
 # file(GLOB STRONG_TYPE_SOURCE ${CMAKE_SOURCE_DIR}/include/strong_type/*.hpp)
-
 set(STRONG_TYPE_SOURCE
-    include/strong_type/strong_type.ixx
-    include/strong_type/strong_type.cpp
     include/strong_type/affine_point.hpp
     include/strong_type/affine_point.hpp
     include/strong_type/arithmetic.hpp
@@ -85,12 +88,25 @@ set(STRONG_TYPE_SOURCE
 )
 
 if(${STRONG_TYPE_MODULE})
+    list(APPEND STRONG_TYPE_SOURCE include/strong_type/strong_type.ixx)
+endif()
+
+if(${STRONG_TYPE_MODULE})
   add_library(strong_type ${STRONG_TYPE_SOURCE})
 else()
   add_library(strong_type INTERFACE)
 endif()
 
 add_library(strong_type::strong_type ALIAS strong_type)
+
+if(${STRONG_TYPE_IMPORT_STD_LIBRARY})
+    message(STATUS "Building library using std library module")
+    target_compile_definitions(strong_type PUBLIC STRONG_TYPE_IMPORT_STD_LIBRARY)
+endif()
+
+if(${STRONG_TYPE_MODULE})
+    message(STATUS "Building strong_type module")
+endif()
 
 target_include_directories(
   strong_type
